@@ -1,36 +1,35 @@
 package pbl2redes;
-import java.net.*;
-import java.util.*;
-import java.io.*;
 
-/**
- *
- * @author Johnny
- */
-public class Receiver {
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.UnknownHostException;
+
+public class Receiver extends Thread {
     
-    public static void main(String[] args) {
+    private final InetAddress grupo;
+    
+    private final MulticastSocket socket;
+    
+    public Receiver () throws UnknownHostException, IOException {
         System.setProperty("java.net.preferIPv4Stack", "true");
-        
-        try {        
-            InetAddress group = InetAddress.getByName("224.0.0.0");
-            MulticastSocket socket = new MulticastSocket(4004);
-            socket.joinGroup(group);
-            
-            int i = 0;
-            while(i < 10) {
-                byte[] buffer = new byte[100];
+        this.grupo = InetAddress.getByName("224.0.0.0");
+        this.socket = new MulticastSocket(4000);
+        this.socket.joinGroup(this.grupo);
+    }
+    
+    @Override
+    public void run () {        
+        try {
+            while(true) {
+                byte[] buffer = new byte[1000];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-                
-                System.out.println(new String(buffer));
-                i++;
+                this.socket.receive(packet);
+                System.out.println("RECEBIDO: " + new String(buffer));
             }
-            socket.close();
-            System.out.println("Closed socket");
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
     
