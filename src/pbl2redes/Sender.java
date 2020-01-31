@@ -19,7 +19,7 @@ public class Sender extends Thread {
     
     public Sender (int idCarro) throws UnknownHostException, IOException {
         this.idCarro = idCarro;
-        System.setProperty("java.net.preferIPv4Stack", "true");
+        //System.setProperty("java.net.preferIPv4Stack", "true");
         this.grupo = InetAddress.getByName("224.0.0.0");
         this.socket = new MulticastSocket();
         this.socket.joinGroup(this.grupo);
@@ -53,15 +53,15 @@ public class Sender extends Thread {
                 this.grupo, 
                 4000
         );
+        System.out.println("==> Enviando: " + mensagem);
         this.socket.send(packet);
-        System.out.println("ENVIADO:" + mensagem);
     }
 
     private String criarMensagem() {
         Random random = new Random();
         //Gerando um numero aleatorio entre 0 e 3:
         int numeroAleatorio = random.nextInt(4);
-        return "" + this.idCarro + " " + numeroAleatorio;
+        return "" + this.idCarro + numeroAleatorio;
     }
     
 }
