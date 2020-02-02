@@ -54,12 +54,12 @@ public class Receiver extends Thread {
                 if (msg.equals("ola")){
                     continue;
                 } else if (msg.charAt(0) == 'C') {
-                    System.out.println("[RUA " + idRua + "] Recebido: " + msg + " [C!]<==");
+                    System.out.println("Recebido: " + msg + " <==");
                     this.fila.finalizarLaco();
                     this.threadSender.ignoraChegarCruzamento();
                     continue;
                 }
-                System.out.println("[RUA " + idRua + "] Recebido: " + msg + " <==");
+                System.out.println("Recebido: " + msg + " <==");
                 this.fila.adicionar(msg);
             }
         } catch (Exception ex) {

@@ -82,7 +82,7 @@ public class Sender extends Thread {
                 4000
         );
         if (!this.flagIgnorarCruzamento){
-            System.out.println("[C!] ==> [RUA " + idRua + "] Enviando: " + mensagem + " CHEGOU AO CRUZAMENTO!");
+            System.out.println("===> Enviando: " + mensagem);
             this.socket.send(packet); 
         } else {
             this.flagIgnorarCruzamento = false;

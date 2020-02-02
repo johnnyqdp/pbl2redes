@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class FilaCarros extends Thread {
 
-    private final ArrayList<String> filaInicial;
+    public final ArrayList<String> filaInicial;
     
-    private ArrayList<String> filaX;
-    private ArrayList<String> filaY;
-    private ArrayList<String> filaZ;
+    public ArrayList<String> filaX;
+    public ArrayList<String> filaY;
+    public ArrayList<String> filaZ;
     
-    private final ArrayList<String> carrosReserva;
+    public final ArrayList<String> carrosReserva;
     
     private boolean flagIsFinalizado;
     
@@ -26,7 +26,7 @@ public class FilaCarros extends Thread {
     }
             
     public void adicionar(String msg) {
-        if (!flagIsFinalizado && filaInicial.size() <= 4) {
+        if (!flagIsFinalizado && filaInicial.size() < 4) {
             pegarCarrosReserva();
             filaInicial.add(msg);
         } else {
@@ -44,14 +44,16 @@ public class FilaCarros extends Thread {
     }
     
 
-    private void iniciarExecucao () {
-        int loop = 0;
-        while (!filaInicial.isEmpty()) {
+    public void iniciarExecucao () {
+        boolean laco1Finalizado = false;
+        boolean laco2Finalizado = false;
+        boolean laco3Finalizado = false;
+        
+        while (!filaInicial.isEmpty() && !laco1Finalizado) {
             filaInicial.forEach((String item) -> {
                 if (!item.equals("R")){
                     int a = item.charAt(0)-'0';
-                    int b = item.charAt(1)-'0';
-                    
+                    int b = item.charAt(1)-'0';                    
                     if (compara(b, a, 1)) {
                         filaX.add(item);
                         filaInicial.set(filaInicial.indexOf(item), "R");
@@ -64,9 +66,20 @@ public class FilaCarros extends Thread {
                                     filaInicial.set(filaInicial.indexOf(item2), "R");
                                 }
                             }
-                        });
-                        
-                    } else if (compara(b, a, 2)) {
+                        });                       
+                    }
+                }
+            });    
+            laco1Finalizado = true; 
+            limparFilaInicial();
+        }
+        
+        while (!filaInicial.isEmpty() && !laco2Finalizado) {
+            filaInicial.forEach((String item) -> {
+                if (!item.equals("R")){
+                    int a = item.charAt(0)-'0';
+                    int b = item.charAt(1)-'0';                    
+                    if (compara(b, a, 2)) {
                         filaY.add(item);
                         filaInicial.set(filaInicial.indexOf(item), "R");
                         filaInicial.forEach((String item2) -> {
@@ -78,9 +91,20 @@ public class FilaCarros extends Thread {
                                     filaInicial.set(filaInicial.indexOf(item2), "R");
                                 }
                             }
-                        });
-                        
-                    } else if (compara(b, a, 3)) {                 
+                        });                        
+                    }
+                }
+            });            
+            limparFilaInicial();
+            laco2Finalizado = true;
+        }
+        
+        while (!filaInicial.isEmpty() && !laco3Finalizado) {
+            filaInicial.forEach((String item) -> {
+                if (!item.equals("R")){
+                    int a = item.charAt(0)-'0';
+                    int b = item.charAt(1)-'0';                    
+                    if (compara(b, a, 3)) {                 
                         filaZ.add(item);
                         filaInicial.set(filaInicial.indexOf(item), "R");
                         filaInicial.forEach((String item2) -> {
@@ -95,10 +119,12 @@ public class FilaCarros extends Thread {
                         });
                     }
                 }
-            });
-            
+            });            
             limparFilaInicial();
+            laco3Finalizado = true;
         }
+        
+        
         System.out.println("==============================");
         System.out.println("FILA X:");
         System.out.println(filaX);
@@ -121,7 +147,7 @@ public class FilaCarros extends Thread {
      * @param i
      * @return 
      */
-    private boolean compara(int b, int a, int i) {
+    public boolean compara(int b, int a, int i) {
         int comparativo = a + i;
         if ( (a == 2 && i == 2) || (a == 3 && i== 1) || (a == 1 && i == 3)) {
             comparativo = 0;
@@ -156,10 +182,9 @@ public class FilaCarros extends Thread {
         while (carrosReserva.size() > 0 && filaInicial.size() < 4 && !flagIsFinalizado) {
             filaInicial.add(carrosReserva.get(0));
             carrosReserva.remove(0);
-        }
-            
-        if (filaInicial.size() >= 4 && !flagIsFinalizado) {
-            finalizarLaco();
+            if (filaInicial.size() >= 4) {
+                break;
+            }
         }
     }
     
