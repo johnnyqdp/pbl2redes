@@ -23,13 +23,10 @@ public class FilaCarrosTest {
     @Test
     public void testIniciarExecucao() {
         FilaCarros f = new FilaCarros(null);
-        f.adicionar("03");
-        f.adicionar("23");
+        f.adicionar("01");
         f.adicionar("13");
-        f.adicionar("32");
-        f.adicionar("02");
-        System.out.println(f.carrosReserva);
-        System.out.println(f.filaInicial);
+        f.adicionar("20");
+        f.adicionar("31");
         f.iniciarExecucao();
     }
     

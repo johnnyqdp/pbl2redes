@@ -6,11 +6,9 @@ public class FilaCarros extends Thread {
 
     public final ArrayList<String> filaInicial;
     
-    public ArrayList<String> filaX;
-    public ArrayList<String> filaY;
-    public ArrayList<String> filaZ;
-    
     public final ArrayList<String> carrosReserva;
+    
+    public ArrayList<ArrayList> filasGeradas;
     
     private boolean flagIsFinalizado;
     
@@ -18,10 +16,8 @@ public class FilaCarros extends Thread {
 
     public FilaCarros(Sender threadSender) {
         filaInicial = new ArrayList<>();
-        filaX = new ArrayList<>();
-        filaY = new ArrayList<>();
-        filaZ = new ArrayList<>();
         carrosReserva = new ArrayList<>();
+        filasGeradas = new ArrayList<>();
         this.threadSender = threadSender;
     }
             
@@ -45,97 +41,91 @@ public class FilaCarros extends Thread {
     
 
     public void iniciarExecucao () {
-        boolean laco1Finalizado = false;
-        boolean laco2Finalizado = false;
-        boolean laco3Finalizado = false;
-        
-        while (!filaInicial.isEmpty() && !laco1Finalizado) {
-            filaInicial.forEach((String item) -> {
-                if (!item.equals("R")){
-                    int a = item.charAt(0)-'0';
-                    int b = item.charAt(1)-'0';                    
-                    if (compara(b, a, 1)) {
-                        filaX.add(item);
-                        filaInicial.set(filaInicial.indexOf(item), "R");
-                        filaInicial.forEach((String item2) -> {
-                            if (!item2.equals("R")) {
-                                int c = item2.charAt(0)-'0';
-                                int d = item2.charAt(1)-'0';
-                                if ((d == b && compara(c, b, 2)) || (d == b && compara(c, b, 1))) {
-                                    filaX.add(item2);
-                                    filaInicial.set(filaInicial.indexOf(item2), "R");
-                                }
+
+        for (int i=0; i<filaInicial.size(); i++) {
+            String item = filaInicial.get(i);
+            if (!item.equals("R")){
+                int a = item.charAt(0)-'0';
+                int b = item.charAt(1)-'0';                    
+                if (compara(b, a, 1)) {
+                    ArrayList<String> filaNova = new ArrayList<>();
+                    filaNova.add(item);
+                    filaInicial.set(filaInicial.indexOf(item), "R");
+                    for (int j=0; j<filaInicial.size(); j++) {
+                        String item2 = filaInicial.get(j);
+                        if (!item2.equals("R")) {
+                            int c = item2.charAt(0)-'0';
+                            int d = item2.charAt(1)-'0';
+                            if ((d == b && compara(c, b, 2)) || (d == b && compara(c, b, -1))) {
+                                filaNova.add(item2);
+                                filaInicial.set(filaInicial.indexOf(item2), "R");
                             }
-                        });                       
+                        }
                     }
+                    filasGeradas.add(filaNova);
                 }
-            });    
-            laco1Finalizado = true; 
-            limparFilaInicial();
+            }
         }
         
-        while (!filaInicial.isEmpty() && !laco2Finalizado) {
-            filaInicial.forEach((String item) -> {
-                if (!item.equals("R")){
-                    int a = item.charAt(0)-'0';
-                    int b = item.charAt(1)-'0';                    
-                    if (compara(b, a, 2)) {
-                        filaY.add(item);
-                        filaInicial.set(filaInicial.indexOf(item), "R");
-                        filaInicial.forEach((String item2) -> {
-                            if (!item2.equals("R")) {
-                                int c = item2.charAt(0)-'0';
-                                int d = item2.charAt(1)-'0';
-                                if ( (d == b && compara(c, b, 1)) || (d == b && compara(c, b, -1)) || (compara(d, b, 1) && compara(c, b, 1)) || (compara (d, b, 1) && compara(c, b, -1)) || (compara(c, b, -1) && d==a) ) {
-                                    filaY.add(item2);
-                                    filaInicial.set(filaInicial.indexOf(item2), "R");
-                                }
+        for (int i=0; i<filaInicial.size(); i++) {
+            String item = filaInicial.get(i);                
+            if (!item.equals("R")){
+                int a = item.charAt(0)-'0';
+                int b = item.charAt(1)-'0';                    
+                if (compara(b, a, 2)) {
+                    ArrayList<String> filaNova = new ArrayList<>();
+                    filaNova.add(item);
+                    filaInicial.set(filaInicial.indexOf(item), "R");
+                    for (int j=0; j<filaInicial.size(); j++) {
+                        String item2 = filaInicial.get(j);
+                        if (!item2.equals("R")) {
+                            int c = item2.charAt(0)-'0';
+                            int d = item2.charAt(1)-'0';
+                            if ( (d == b && compara(c, b, 1)) || (d == b && compara(c, b, -1)) || (compara(d, b, 1) && compara(c, b, 1)) || (compara (d, b, 1) && compara(c, b, -1)) || (compara(c, b, -1) && d==a) ) {
+                                filaNova.add(item2);
+                                filaInicial.set(filaInicial.indexOf(item2), "R");
                             }
-                        });                        
+                        }
                     }
+                    filasGeradas.add(filaNova);
                 }
-            });            
-            limparFilaInicial();
-            laco2Finalizado = true;
+            }
+        }
+
+        for (int i=0; i<filaInicial.size(); i++) {
+            String item = filaInicial.get(i);
+            if (!item.equals("R")){
+                int a = item.charAt(0)-'0';
+                int b = item.charAt(1)-'0';                    
+                if (compara(b, a, 3)) {                 
+                    ArrayList<String> filaNova = new ArrayList<>();
+                    filaNova.add(item);
+                    filaInicial.set(filaInicial.indexOf(item), "R");
+                    for (int j=0; j<filaInicial.size(); j++) {
+                        String item2 = filaInicial.get(j);
+                        if (!item2.equals("R")) {
+                            int c = item2.charAt(0)-'0';
+                            int d = item2.charAt(1)-'0';
+                            if ( (c == b) || (d == a && compara(c, b, -1)) || (compara(c,b,-1) && compara(d,a,1)) || (d == b && compara(c, a, 1)) ) {
+                                filaNova.add(item2);
+                                filaInicial.set(filaInicial.indexOf(item2), "R");
+                            }
+                        }
+                    }
+                    filasGeradas.add(filaNova);
+                }
+            }
         }
         
-        while (!filaInicial.isEmpty() && !laco3Finalizado) {
-            filaInicial.forEach((String item) -> {
-                if (!item.equals("R")){
-                    int a = item.charAt(0)-'0';
-                    int b = item.charAt(1)-'0';                    
-                    if (compara(b, a, 3)) {                 
-                        filaZ.add(item);
-                        filaInicial.set(filaInicial.indexOf(item), "R");
-                        filaInicial.forEach((String item2) -> {
-                            if (!item2.equals("R")) {
-                                int c = item2.charAt(0)-'0';
-                                int d = item2.charAt(1)-'0';
-                                if ( (c == b) || (d == a && compara(c, b, -1)) || (compara(c,b,-1) && compara(d,a,1)) || (d == b && compara(c, a, 1)) ) {
-                                    filaZ.add(item2);
-                                    filaInicial.set(filaInicial.indexOf(item2), "R");
-                                }
-                            }
-                        });
-                    }
-                }
-            });            
-            limparFilaInicial();
-            laco3Finalizado = true;
+        System.out.println("======== FILAS DE EXECUCAO SIMULTANEAS ========");
+
+        for (int i=0; i<filasGeradas.size(); i++){
+            System.out.println("Fila " + (i+1) + ": " + filasGeradas.get(i));
         }
         
-        
-        System.out.println("==============================");
-        System.out.println("FILA X:");
-        System.out.println(filaX);
-        System.out.println("FILA Y:");
-        System.out.println(filaY);
-        System.out.println("FILA Z:");
-        System.out.println(filaZ);
-        System.out.println("==============================");
-        filaX = new ArrayList<>();
-        filaY = new ArrayList<>();
-        filaZ = new ArrayList<>();
+        System.out.println("===============================================");
+        filasGeradas = new ArrayList<>();
+        limparFilaInicial();
         flagIsFinalizado = false;
     }
 
