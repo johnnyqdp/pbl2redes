@@ -33,14 +33,12 @@ public class Sender extends Thread {
     public void run () {
         try {
             while (true) {
+                Thread.sleep(5000);
                 if (this.flagPodeEnviar) {
                     this.enviarCarro();
-                }
-                Thread.sleep(5000);            
+                }            
             }
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+        } catch (InterruptedException | IOException ex) {
             ex.printStackTrace();
         }
     }

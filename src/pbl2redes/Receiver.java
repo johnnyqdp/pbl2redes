@@ -14,12 +14,15 @@ public class Receiver extends Thread {
     
     private final FilaCarros fila;
     
-    public Receiver () throws UnknownHostException, IOException {
+    private final Sender threadSender;
+    
+    public Receiver (Sender threadSender) throws UnknownHostException, IOException {
         //System.setProperty("java.net.preferIPv4Stack", "true");
         this.grupo = InetAddress.getByName("224.0.0.0");
         this.socket = new MulticastSocket(4000);
         this.socket.joinGroup(this.grupo);
-        this.fila = new FilaCarros();
+        this.threadSender = threadSender;
+        this.fila = new FilaCarros(threadSender);
     }
     
     @Override
