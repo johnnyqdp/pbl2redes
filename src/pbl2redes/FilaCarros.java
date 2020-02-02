@@ -87,7 +87,7 @@ public class FilaCarros extends Thread {
                             if (!item2.equals("R")) {
                                 int c = item2.charAt(0)-'0';
                                 int d = item2.charAt(1)-'0';
-                                if ( (c == b) || (d == a && compara(c, b, -1)) || (compara(c,b,-1) && compara(d,a,1)) || (d == b && compara(c, a, 1))  || (d==a && !compara(c, a, 2))) {
+                                if ( (c == b) || (d == a && compara(c, b, -1)) || (compara(c,b,-1) && compara(d,a,1)) || (d == b && compara(c, a, 1)) ) {
                                     filaZ.add(item2);
                                     filaInicial.set(filaInicial.indexOf(item2), "R");
                                 }
