@@ -49,11 +49,11 @@ public class Sender extends Thread {
     }
     
     /**
-     * Gera uma quantidade de segundos entre 2 e 6, espera esse tempo e informa que o carro apareceu na rua
+     * Gera uma quantidade de segundos entre 3 e 7, espera esse tempo e informa que o carro apareceu na rua
      */    
     private void enviarCarro () throws IOException, InterruptedException {
         Random random = new Random();
-        int tempoPraChegar = (random.nextInt(5) + 2);
+        int tempoPraChegar = (random.nextInt(5) + 3);
         Thread.sleep(tempoPraChegar*1000);
         String mensagem = this.criarMensagem();
         DatagramPacket packet = new DatagramPacket(
@@ -68,12 +68,12 @@ public class Sender extends Thread {
     }
     
     /**
-     * Gera uma quantidade de segundos entre 1 e 4, espera esse tempo e informa que o carro chegou ao cruzamento
+     * Gera uma quantidade de segundos entre 0 e 1, espera esse tempo e informa que o carro chegou ao cruzamento
      */
     private void chegarNoCruzamento(String msg) throws InterruptedException, IOException {
         Random random = new Random();
-        int tempoPraChegar = (random.nextInt(4) + 1);
-        Thread.sleep(tempoPraChegar*1000);
+        int tempoPraChegar = (random.nextInt(1000));
+        Thread.sleep(tempoPraChegar);
         String mensagem = "C" + msg;
         DatagramPacket packet = new DatagramPacket(
                 mensagem.getBytes(), 

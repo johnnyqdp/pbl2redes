@@ -13,18 +13,29 @@ public class FilaCarros extends Thread {
     private boolean flagIsFinalizado;
     
     private final Sender threadSender;
+    
+    private final Interface i;
 
     public FilaCarros(Sender threadSender) {
         filaInicial = new ArrayList<>();
         carrosReserva = new ArrayList<>();
         filasGeradas = new ArrayList<>();
         this.threadSender = threadSender;
+        this.i = new Interface();
     }
             
     public void adicionar(String msg) {
         if (!flagIsFinalizado && filaInicial.size() < 4) {
             pegarCarrosReserva();
-            filaInicial.add(msg);
+            if (filaInicial.size() < 4) {
+                i.addCarro(msg);
+                filaInicial.add(msg);
+            } else {
+                carrosReserva.add(msg);
+                System.out.println("Adicionando " + msg + " na fila reserva.");
+                flagIsFinalizado = true;
+                iniciarExecucao();
+            }
         } else {
             carrosReserva.add(msg);
             System.out.println("Adicionando " + msg + " na fila reserva.");
@@ -56,7 +67,7 @@ public class FilaCarros extends Thread {
                         if (!item2.equals("R")) {
                             int c = item2.charAt(0)-'0';
                             int d = item2.charAt(1)-'0';
-                            if ((d == b && compara(c, b, 2)) || (d == b && compara(c, b, -1))) {
+                            if ((d == b)) {
                                 filaNova.add(item2);
                                 filaInicial.set(filaInicial.indexOf(item2), "R");
                             }
@@ -81,7 +92,7 @@ public class FilaCarros extends Thread {
                         if (!item2.equals("R")) {
                             int c = item2.charAt(0)-'0';
                             int d = item2.charAt(1)-'0';
-                            if ( (d == b && compara(c, b, 1)) || (d == b && compara(c, b, -1)) || (compara(d, b, 1) && compara(c, b, 1)) || (compara (d, b, 1) && compara(c, b, -1)) || (compara(c, b, -1) && d==a) ) {
+                            if ( (d == b && compara(c, b, 1)) || (d == b && compara(c, b, -1)) || (compara(d, b, 1) && compara(c, b, 1)) || (compara (d, b, 1) && compara(c, b, -1)) || (compara(c, b, -1) && d==a) || (b==c && compara(d,a,1))) {
                                 filaNova.add(item2);
                                 filaInicial.set(filaInicial.indexOf(item2), "R");
                             }
@@ -124,6 +135,7 @@ public class FilaCarros extends Thread {
         }
         
         System.out.println("===============================================");
+        System.out.println("FILA RESERVA: " + carrosReserva);
         filasGeradas = new ArrayList<>();
         limparFilaInicial();
         flagIsFinalizado = false;
@@ -171,8 +183,11 @@ public class FilaCarros extends Thread {
     private void pegarCarrosReserva() {
         while (carrosReserva.size() > 0 && filaInicial.size() < 4 && !flagIsFinalizado) {
             filaInicial.add(carrosReserva.get(0));
+            i.addCarro(carrosReserva.get(0));
             carrosReserva.remove(0);
             if (filaInicial.size() >= 4) {
+                flagIsFinalizado = true;
+                iniciarExecucao();
                 break;
             }
         }
