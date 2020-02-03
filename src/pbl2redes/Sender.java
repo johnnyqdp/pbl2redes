@@ -62,7 +62,7 @@ public class Sender extends Thread {
                 this.grupo, 
                 4000
         );
-        System.out.println("==> [RUA " + idRua + "] Enviando: " + mensagem);
+        System.out.println("==> Enviando: " + mensagem);
         this.socket.send(packet);
         chegarNoCruzamento(mensagem);
     }

@@ -23,13 +23,13 @@ public class Receiver extends Thread {
     
     private final ArrayList<Integer> ruas;
     
-    public Receiver (Sender threadSender, int idRua) throws UnknownHostException, IOException {
+    public Receiver (Sender threadSender, int idRua, Interface i) throws UnknownHostException, IOException {
         //System.setProperty("java.net.preferIPv4Stack", "true");
         this.grupo = InetAddress.getByName("224.0.0.0");
         this.socket = new MulticastSocket(4000);
         this.socket.joinGroup(this.grupo);
         this.threadSender = threadSender;
-        this.fila = new FilaCarros(threadSender);
+        this.fila = new FilaCarros(threadSender, i);
         this.idRua = idRua;
         ruas = new ArrayList<>();
     }
