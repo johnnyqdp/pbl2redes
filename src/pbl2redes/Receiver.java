@@ -51,9 +51,11 @@ public class Receiver extends Thread {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 this.socket.receive(packet);
                 String msg = new String(buffer);
-                if (msg.equals("ola")){
+                if (msg.equals("ola") || msg.charAt(0) == 'K'){
                     continue;
-                } else if (msg.charAt(0) == 'C') {
+                }
+                this.threadSender.enviarConfirmacao(msg);
+                if (msg.charAt(0) == 'C') {
                     System.out.println("Recebido: " + msg + " <==");
                     this.fila.finalizarLaco();
                     this.threadSender.ignoraChegarCruzamento();

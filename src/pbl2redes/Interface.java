@@ -14,7 +14,7 @@ public class Interface extends JFrame {
     
     private final JLabel background;
     
-    private Animador animador;
+    private final Animador animador;
     
     public Interface() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,10 +32,6 @@ public class Interface extends JFrame {
 
     public JLabel getThisBackground() {
         return background;
-    }
-
-    public void setFilaInicial(ArrayList<String> filaInicial) {
-        animador.setFilaInicial(filaInicial);
     }
 
     public void setExecucao(ArrayList<ArrayList> filasGeradas) {

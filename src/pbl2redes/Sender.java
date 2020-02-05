@@ -63,7 +63,8 @@ public class Sender extends Thread {
                 4000
         );
         System.out.println("==> Enviando: " + mensagem);
-        this.socket.send(packet);
+        
+        enviarMensagem (packet, mensagem);        
         chegarNoCruzamento(mensagem);
     }
     
@@ -112,6 +113,31 @@ public class Sender extends Thread {
 
     public void ignoraChegarCruzamento() {
         this.flagIgnorarCruzamento = true;
+    }
+
+    private void enviarMensagem(DatagramPacket packet, String mensagem) throws IOException, InterruptedException {
+        Confirmador confirmador = new Confirmador(mensagem);
+        confirmador.start();
+        this.socket.send(packet);
+        Thread.sleep(1500);
+        if (!confirmador.isConfirmadoPorTodos()) {
+            System.exit(0);
+        } else {
+            confirmador.interrupt();
+        }
+    }
+    
+    public void enviarConfirmacao (String msg) throws IOException {
+        String mensagem = "K" + this.idRua + msg;
+        DatagramPacket packet = new DatagramPacket(
+                mensagem.getBytes(), 
+                mensagem.length(), 
+                this.grupo, 
+                4000
+        );
+        for (int i=0; i<5; i++) {
+            this.socket.send(packet);
+        }
     }
     
 }

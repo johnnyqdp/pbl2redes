@@ -55,8 +55,6 @@ public class FilaCarros extends Thread {
         
         Collections.sort(filaInicial);
         
-        i.setFilaInicial(filaInicial);
-        
         gerarFilas();
         
         i.setExecucao(filasGeradas);

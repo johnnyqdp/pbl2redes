@@ -1,8 +1,6 @@
 package pbl2redes;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -24,6 +22,8 @@ public class Animador extends Thread {
     private final int[] coordenadasSaindoX = {256};
     private final int[] coordenadasSaindoY = {400};
     
+    private boolean flagJatem[] = {false,false,false,false};
+    
     public Animador (Interface i) {
         this.inter = i;
         this.background = i.getThisBackground();
@@ -38,26 +38,36 @@ public class Animador extends Thread {
     public void run() {
         try {
             while (true) {
-                if (filaInicial.size() > 0) {
-                    System.out.println("\t\t\tPRIMEIRO IF");
-                    executarPosicionamento();
-                    filaInicial = new ArrayList<>();
-                } else if (execucao.size() > 0) {
-                    System.out.println("\t\t\tSEGUNDO IF");
+                if (execucao.size() > 0) {
                     fazerTudoSumir();
                     executarAnimacao();   
                     execucao = new ArrayList<>();
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                     fazerTudoSumir();
-                }           
+                }
+                Thread.sleep(150);
             }
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
     }
     
-    private void executarPosicionamento() {
-        posicionar(coordenadasChegadaX, coordenadasChegadaY);
+    private void adicionarCarroNaRua(String msg) {
+        filaInicial.add(msg);
+        int a = msg.charAt(0)-'0';
+        JLabel carro;
+        if (!flagJatem[a]) {
+            flagJatem[a] = true;
+            carro = ruasCarros.get(a);
+            carro.setBounds(coordenadasChegadaX[a], coordenadasChegadaY[a], 30, 30);
+        } else {
+            carro = new JLabel(new ImageIcon(getClass().getResource("purple.jpg")));
+            carro.setBounds(coordenadasChegadaX[a]-5, coordenadasChegadaY[a]-5, 30, 30);
+            ruasCarros.add(carro);
+        }
+        carro.setVisible(true);
+        background.add(carro);
+        inter.repaint();  
     }
     
     private void colocarTodosNoCruzamento() {
@@ -66,6 +76,7 @@ public class Animador extends Thread {
 
     private void executarAnimacao() {
         colocarTodosNoCruzamento();
+        filaInicial = new ArrayList<>();
         boolean flagJatem[] = {false,false,false,false};
     }
     
@@ -81,10 +92,6 @@ public class Animador extends Thread {
         this.execucao = execucao;
     }
 
-    public void setFilaInicial(ArrayList<String> filaInicial) {
-        this.filaInicial = filaInicial;
-    }
-
     private void posicionar(int[] coordenadasX, int[] coordenadasY) {
         boolean flagJatem[] = {false,false,false,false};
         
@@ -96,7 +103,7 @@ public class Animador extends Thread {
             JLabel carro;
             if (!flagJatem[a]) {
                 flagJatem[a] = true;
-                carro = ruasCarros.get(i);
+                carro = ruasCarros.get(a);
                 carro.setBounds(coordenadasX[a], coordenadasY[a], 30, 30);
             } else {
                 carro = new JLabel(new ImageIcon(getClass().getResource("purple.jpg")));
