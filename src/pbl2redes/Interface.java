@@ -139,7 +139,7 @@ public class Interface extends JFrame {
                         lCarrosSaida[b].setVisible(true);
                         somas2[a] += 4;
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(1100);
                 }
                 i.resetarCarros();
             } catch (InterruptedException e) {
