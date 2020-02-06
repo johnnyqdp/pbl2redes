@@ -14,7 +14,7 @@ public class Confirmador extends Thread {
     private final MulticastSocket socket; 
     private final InetAddress grupo;
     private boolean[] confirmou = {false, false, false, false};
-   
+    
     public Confirmador (String msg) throws UnknownHostException, IOException {
         this.msg = msg;
         this.grupo = InetAddress.getByName("224.0.0.0");

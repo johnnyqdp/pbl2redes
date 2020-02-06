@@ -54,10 +54,11 @@ public class FilaCarros extends Thread {
     public void iniciarExecucao () {  
         
         Collections.sort(filaInicial);
+        ArrayList<String> filaInicialCopia = new ArrayList<>(filaInicial);
         
         gerarFilas();
         
-        i.setExecucao(filasGeradas);
+        i.setExecucao(filasGeradas, filaInicialCopia);
         
         System.out.println("======== FILAS DE EXECUCAO SIMULTANEAS ========");
         for (int i=0; i<filasGeradas.size(); i++){
