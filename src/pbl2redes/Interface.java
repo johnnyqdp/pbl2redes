@@ -142,6 +142,7 @@ public class Interface extends JFrame {
                     Thread.sleep(1100);
                 }
                 i.resetarCarros();
+                this.interrupt();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

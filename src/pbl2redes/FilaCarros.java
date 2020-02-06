@@ -109,17 +109,17 @@ public class FilaCarros extends Thread {
         int a = item.charAt(0)-'0';
         int b = item.charAt(1)-'0';
         int c = item2.charAt(0)-'0';
-        int d = item2.charAt(1)-'0';     
-        
-        //Se ambos estão saindo da mesma rua, um tá atrás do outro. Portanto não tem colapso
-        if (a == c) {
-            return false;
-        }        
+        int d = item2.charAt(1)-'0';
         
         //Caso ambos estejam indo pra mesma rua, o colapso é garantido
         if (b == d){
             return true;
-        }        
+        } 
+        
+        //Se ambos estão saindo da mesma rua, um tá atrás do outro. Portanto não tem colapso
+        if (a == c) {
+            return false;
+        }       
         
         //Caso ambos estejam seguindo reto, porém não estão em sentidos opostos, há colapso
         if ( (!compara(a,c,2) ) && compara(b,a,2) && compara(d,c,2)) {
